@@ -11,12 +11,18 @@ public class DiscountCalculator {
     private static final BigDecimal RAW_COST_PER_BOOK = BigDecimal.valueOf(8.00);
 
     public BigDecimal getCost(int[] booksToPurchase) {
+        boolean duplicateBooks = false;
+        for (int i = 0; i < booksToPurchase.length; i++) {
+            if (booksToPurchase[i] > 1) {
+                duplicateBooks = true;
+            }
+        }
 
         int numberOfBooks = Arrays.stream(booksToPurchase).reduce(0, (x,y) -> x + y);
         BigDecimal discount = findDiscount(numberOfBooks);
         BigDecimal rawTotalPrice = RAW_COST_PER_BOOK.multiply(BigDecimal.valueOf(numberOfBooks));
         BigDecimal discountedPrice = rawTotalPrice.multiply(discount);
-        return discountedPrice.setScale(2);
+        return duplicateBooks ? rawTotalPrice.setScale(2) : discountedPrice.setScale(2);
     }
 
     private BigDecimal findDiscount(int numberOfBooks) {
