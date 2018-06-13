@@ -84,7 +84,7 @@ public class DiscountCalculatorTest {
 
     @Test
     public void shouldMaximizeTheDiscountWhenMultipleCombinationsArePossible() {
-        int[] booksToPurchase = {2, 2, 1, 1, 1};
+        int[] booksToPurchase = {2, 2, 2, 1, 1};
         assertThat(underTest.getCost(booksToPurchase), is(fiftyOneDollarsTwentyCents));
     }
 
