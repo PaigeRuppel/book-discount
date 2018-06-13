@@ -25,9 +25,11 @@ public class DiscountCalculator {
         boolean duplicates;
         BigDecimal totalDiscountedPrice = BigDecimal.valueOf(0);
 
+        Map<Integer, Integer> distinctGroupings = new HashMap<>();
         do {
             int distinctBooks = 0;
             duplicates = false;
+
             for (int i = 0; i < booksToPurchase.length; i++) {
                 if (booksToPurchase[i] == 1) {
                     distinctBooks++;
@@ -39,14 +41,41 @@ public class DiscountCalculator {
                 }
             }
 
-            BigDecimal rawTotalPrice = calculateRawPrice(distinctBooks);
-            BigDecimal discount = findDiscount(distinctBooks);
-            BigDecimal discountedPrice = calculateDiscountedPrice(discount, rawTotalPrice);
+            int numberOfSets = distinctGroupings.getOrDefault(distinctBooks, 0);
+            distinctGroupings.put(distinctBooks, ++numberOfSets);
 
-            totalDiscountedPrice = totalDiscountedPrice.add(discountedPrice);
         } while (duplicates);
 
+        totalDiscountedPrice = maximizeDiscount(distinctGroupings);
         return totalDiscountedPrice;
+    }
+
+    private BigDecimal maximizeDiscount(Map<Integer, Integer> distinctGroupings) {
+
+        if (distinctGroupings.getOrDefault(3, 0) >= 1 && distinctGroupings.getOrDefault(5, 0) >= 1) {
+            distinctGroupings.remove(3);
+            distinctGroupings.remove(5);
+            int numberOfSetsOfFour = distinctGroupings.getOrDefault(4, 0) + 2;
+            distinctGroupings.put(4, numberOfSetsOfFour);
+        }
+
+        int counter = 1;
+        BigDecimal totalPrice = BigDecimal.valueOf(0);
+
+        while (counter < 6) {
+            int numberSets = distinctGroupings.getOrDefault(counter, 0);
+
+            if (numberSets > 0) {
+                BigDecimal rawTotalPrice = calculateRawPrice(counter);
+                BigDecimal discount = findDiscount(counter);
+                BigDecimal discountedPriceForOneSet = calculateDiscountedPrice(discount, rawTotalPrice);
+                BigDecimal totalDiscountedPrice = discountedPriceForOneSet.multiply(BigDecimal.valueOf(numberSets));
+                totalPrice = totalPrice.add(totalDiscountedPrice);
+            }
+            counter++;
+        }
+
+        return totalPrice;
     }
 
     private BigDecimal calculateRawPrice(int numberOfBooks) {
