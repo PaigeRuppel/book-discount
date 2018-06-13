@@ -95,4 +95,5 @@ public class DiscountCalculatorTest {
         assertThat(underTest.getCost(booksToPurchase), is(sixtyDollars));
     }
 
+
 }
