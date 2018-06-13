@@ -19,13 +19,15 @@ public class DiscountCalculator {
         return discounts;
     }
 
+    private Map<Integer, Integer> distinctGroupings;
+
     public BigDecimal getCost(int[] booksToPurchase) {
-        Map<Integer, Integer> distinctGroupings = buildDistinctGroupingsOfBooks(booksToPurchase);
-        return maximizeDiscount(distinctGroupings);
+        buildDistinctGroupingsOfBooks(booksToPurchase);
+        return findMaximumDiscount();
     }
 
     private Map<Integer, Integer> buildDistinctGroupingsOfBooks(int[] booksToPurchase) {
-        Map<Integer, Integer> distinctGroupings = new HashMap<>();
+        distinctGroupings = new HashMap<>();
         while (distinctGroupings.getOrDefault(0, 0) == 0) {
             int numberDistinctBooks = 0;
             for (int i = 0; i < booksToPurchase.length; i++) {
@@ -41,21 +43,8 @@ public class DiscountCalculator {
         return distinctGroupings;
     }
 
-    private BigDecimal maximizeDiscount(Map<Integer, Integer> distinctGroupings) {
-        if (distinctGroupings.getOrDefault(3, 0) >= 1 && distinctGroupings.getOrDefault(5, 0) >= 1) {
-
-            int numberOfThrees = distinctGroupings.get(3);
-            int numberOfFives = distinctGroupings.get(5);
-            int numberOfSetsOfFour = distinctGroupings.getOrDefault(4, 0);
-            if (numberOfFives == numberOfThrees) {
-                distinctGroupings.remove(3);
-                distinctGroupings.remove(5);
-                numberOfSetsOfFour += numberOfFives + numberOfThrees;
-            }
-
-            distinctGroupings.put(4, numberOfSetsOfFour);
-        }
-
+    private BigDecimal findMaximumDiscount() {
+        adjustGroupingsToMaximizeDiscount();
         int counter = 1;
         BigDecimal totalPrice = BigDecimal.valueOf(0);
 
@@ -70,8 +59,21 @@ public class DiscountCalculator {
             }
             counter++;
         }
-
         return totalPrice;
+    }
+
+    private void adjustGroupingsToMaximizeDiscount() {
+        if (distinctGroupings.getOrDefault(3, 0) >= 1 && distinctGroupings.getOrDefault(5, 0) >= 1) {
+            int numberOfThrees = distinctGroupings.get(3);
+            int numberOfFives = distinctGroupings.get(5);
+            int numberOfSetsOfFour = distinctGroupings.getOrDefault(4, 0);
+            if (numberOfFives == numberOfThrees) {
+                distinctGroupings.remove(3);
+                distinctGroupings.remove(5);
+                numberOfSetsOfFour += numberOfFives + numberOfThrees;
+            }
+            distinctGroupings.put(4, numberOfSetsOfFour);
+        }
     }
 
     private BigDecimal calculateRawPrice(int numberOfBooks) {

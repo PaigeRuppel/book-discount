@@ -5,23 +5,12 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 
+import static com.paigeruppel.katas.bookdiscount.PriceConstants.*;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class DiscountCalculatorTest {
-
-    BigDecimal eightDollars = BigDecimal.valueOf(8.00).setScale(2);
-    BigDecimal sixteenDollars = BigDecimal.valueOf(16.00).setScale(2);
-    BigDecimal fifteenDollarsTwentyCents = BigDecimal.valueOf(15.20).setScale(2);
-    BigDecimal twentyOneDollarsSixtyCents = BigDecimal.valueOf(21.60).setScale(2);
-    BigDecimal twentyFiveDollarsSixtyCents = BigDecimal.valueOf(25.60).setScale(2);
-    BigDecimal thirtyDollars = BigDecimal.valueOf(30.00).setScale(2);
-    BigDecimal thirtyDollarsFortyCents = BigDecimal.valueOf(30.40).setScale(2);
-    BigDecimal thirtyEightDollarsFortyCents = BigDecimal.valueOf(38.40).setScale(2);
-    BigDecimal fiftyOneDollarsTwentyCents = BigDecimal.valueOf(51.20).setScale(2);
-    BigDecimal sixtyDollars = BigDecimal.valueOf(60.00).setScale(2);
-    BigDecimal oneHundredTwoDollarsFortyCents = BigDecimal.valueOf(102.40).setScale(2);
 
     private DiscountCalculator underTest;
 
