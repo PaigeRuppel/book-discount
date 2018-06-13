@@ -44,7 +44,6 @@ public class DiscountCalculator {
             BigDecimal discountedPrice = calculateDiscountedPrice(discount, rawTotalPrice);
 
             totalDiscountedPrice = totalDiscountedPrice.add(discountedPrice);
-
         } while (duplicates);
 
         return totalDiscountedPrice;
