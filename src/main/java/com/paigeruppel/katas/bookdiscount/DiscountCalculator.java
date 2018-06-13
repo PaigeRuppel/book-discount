@@ -27,7 +27,7 @@ public class DiscountCalculator {
 
     private Map<Integer, Integer> buildDistinctGroupingsOfBooks(int[] booksToPurchase) {
         distinctGroupings = new HashMap<>();
-        while (distinctGroupings.getOrDefault(0, 0) == 0) {
+        while (hasUngroupedBooksToPurchase()) {
             int numberDistinctBooks = 0;
             for (int i = 0; i < booksToPurchase.length; i++) {
                 if (booksToPurchase[i] >= 1) {
@@ -40,6 +40,10 @@ public class DiscountCalculator {
         }
 
         return distinctGroupings;
+    }
+
+    private boolean hasUngroupedBooksToPurchase() {
+        return distinctGroupings.getOrDefault(0, 0) == 0;
     }
 
     private BigDecimal findMaximumDiscount() {
@@ -71,7 +75,16 @@ public class DiscountCalculator {
                 distinctGroupings.remove(3);
                 distinctGroupings.remove(5);
                 numberOfSetsOfFour += numberOfFives + numberOfThrees;
+            } else if (numberOfFives > numberOfThrees) {
+                distinctGroupings.remove(3);
+                distinctGroupings.put(5, --numberOfFives);
+                numberOfSetsOfFour += numberOfThrees + numberOfThrees;
+            } else if (numberOfThrees > numberOfFives) {
+                distinctGroupings.remove(5);
+                distinctGroupings.put(3, --numberOfThrees);
+                numberOfSetsOfFour += numberOfFives + numberOfFives;
             }
+
             distinctGroupings.put(4, numberOfSetsOfFour);
         }
     }

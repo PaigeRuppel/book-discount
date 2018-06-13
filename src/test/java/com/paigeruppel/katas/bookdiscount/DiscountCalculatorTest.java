@@ -74,7 +74,7 @@ public class DiscountCalculatorTest {
     }
 
     @Test
-    public void shouldMaximizeTheDiscountWhenMultipleCombinationsArePossible() {
+    public void shouldConvertOneSetOfThreeAndOneSetOfFiveToTwoSetsOfFour() {
         int[] booksToPurchase = {2, 2, 2, 1, 1};
         assertThat(underTest.getCost(booksToPurchase), is(fiftyOneDollarsTwentyCents));
     }
@@ -89,6 +89,19 @@ public class DiscountCalculatorTest {
     public void shouldConvertTwoSetsOfFiveAndTwoSetsOfThreeToFourSetsOfFour() {
         int[] booksToPurchase = {4, 4, 4, 2, 2};
         assertThat(underTest.getCost(booksToPurchase), is(oneHundredTwoDollarsFortyCents));
+    }
+
+    @Test
+    public void shouldConvertOneSetOfFiveAndTwoSetsOfThreeToTwoSetsOfFourAndOneSetOfThree() {
+        int[] booksToPurchase = {3, 3, 3, 1, 1};
+        assertThat(underTest.getCost(booksToPurchase), is(seventyTwoDollarsEightyCents));
+    }
+
+    @Test
+    public void shouldConvertTwoSetsOfFiveAndOneSetOfThreeToTwoSetsOfFourAndOneSetOfFive() {
+        int[] booksToPurchase = {3, 3, 3, 2, 2};
+        assertThat(underTest.getCost(booksToPurchase), is(eightyOneDollarsTwentyCents));
+
     }
 
 

@@ -15,5 +15,7 @@ public class PriceConstants {
     public static final BigDecimal thirtyEightDollarsFortyCents = BigDecimal.valueOf(38.40).setScale(2);
     public static final BigDecimal fiftyOneDollarsTwentyCents = BigDecimal.valueOf(51.20).setScale(2);
     public static final BigDecimal sixtyDollars = BigDecimal.valueOf(60.00).setScale(2);
+    public static final BigDecimal seventyTwoDollarsEightyCents = BigDecimal.valueOf(72.80).setScale(2);
+    public static final BigDecimal eightyOneDollarsTwentyCents = BigDecimal.valueOf(81.20).setScale(2);
     public static final BigDecimal oneHundredTwoDollarsFortyCents = BigDecimal.valueOf(102.40).setScale(2);
 }
