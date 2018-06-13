@@ -20,6 +20,7 @@ public class DiscountCalculatorTest {
     BigDecimal thirtyDollarsFortyCents = BigDecimal.valueOf(30.40).setScale(2);
     BigDecimal thirtyEightDollarsFortyCents = BigDecimal.valueOf(38.40).setScale(2);
     BigDecimal fiftyOneDollarsTwentyCents = BigDecimal.valueOf(51.20).setScale(2);
+    BigDecimal sixtyDollars = BigDecimal.valueOf(60.00).setScale(2);
 
     private DiscountCalculator underTest;
 
@@ -86,6 +87,12 @@ public class DiscountCalculatorTest {
     public void shouldMaximizeTheDiscountWhenMultipleCombinationsArePossible() {
         int[] booksToPurchase = {2, 2, 2, 1, 1};
         assertThat(underTest.getCost(booksToPurchase), is(fiftyOneDollarsTwentyCents));
+    }
+
+    @Test
+    public void shouldReturnSixtyDollarsWhenTwoCompleteSetsArePurchased() {
+        int[] booksToPurchase = {2,2,2,2,2};
+        assertThat(underTest.getCost(booksToPurchase), is(sixtyDollars));
     }
 
 }

@@ -22,14 +22,16 @@ public class DiscountCalculator {
     }
 
     public BigDecimal getCost(int[] booksToPurchase) {
-        boolean duplicates;
-        BigDecimal totalDiscountedPrice = BigDecimal.valueOf(0);
+        Map<Integer, Integer> distinctGroupings = buildDistinctGroupingsOfBooks(booksToPurchase);
+        return maximizeDiscount(distinctGroupings);
+    }
 
+    private Map<Integer, Integer> buildDistinctGroupingsOfBooks(int[] booksToPurchase) {
+        boolean duplicates;
         Map<Integer, Integer> distinctGroupings = new HashMap<>();
         do {
             int distinctBooks = 0;
             duplicates = false;
-
             for (int i = 0; i < booksToPurchase.length; i++) {
                 if (booksToPurchase[i] == 1) {
                     distinctBooks++;
@@ -40,18 +42,13 @@ public class DiscountCalculator {
                     distinctBooks++;
                 }
             }
-
             int numberOfSets = distinctGroupings.getOrDefault(distinctBooks, 0);
             distinctGroupings.put(distinctBooks, ++numberOfSets);
-
         } while (duplicates);
-
-        totalDiscountedPrice = maximizeDiscount(distinctGroupings);
-        return totalDiscountedPrice;
+        return distinctGroupings;
     }
 
     private BigDecimal maximizeDiscount(Map<Integer, Integer> distinctGroupings) {
-
         if (distinctGroupings.getOrDefault(3, 0) >= 1 && distinctGroupings.getOrDefault(5, 0) >= 1) {
             distinctGroupings.remove(3);
             distinctGroupings.remove(5);
@@ -74,7 +71,6 @@ public class DiscountCalculator {
             }
             counter++;
         }
-
         return totalPrice;
     }
 
