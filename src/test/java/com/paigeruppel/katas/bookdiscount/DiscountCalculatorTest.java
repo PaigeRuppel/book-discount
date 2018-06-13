@@ -69,4 +69,10 @@ public class DiscountCalculatorTest {
         assertThat(underTest.getCost(booksToPurchase), is(fifteenDollarsTwentyCents.add(eightDollars)));
     }
 
+    @Test
+    public void whenTwoLikeSetsArePurchasedEachShouldGetTheTwoBookDiscount() {
+        int[] booksToPurchase = {2, 2, 0, 0, 0};
+        assertThat(underTest.getCost(booksToPurchase), is(fifteenDollarsTwentyCents.multiply(BigDecimal.valueOf(2))));
+    }
+
 }
