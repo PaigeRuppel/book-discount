@@ -22,30 +22,32 @@ public class DiscountCalculator {
     }
 
     public BigDecimal getCost(int[] booksToPurchase) {
-        boolean[] duplicates = {false, false, false, false, false};
-        int[] remainingBooks = {0, 0, 0, 0, 0};
+        boolean duplicates;
+        BigDecimal totalDiscountedPrice = BigDecimal.valueOf(0);
 
-        for (int i = 0; i < booksToPurchase.length; i++) {
-            if (booksToPurchase[i] > 1) {
-                duplicates[i] = true;
-                remainingBooks[i] = booksToPurchase[i] - 1;
-                booksToPurchase[i] = 1;
+        do {
+            int distinctBooks = 0;
+            duplicates = false;
+            for (int i = 0; i < booksToPurchase.length; i++) {
+                if (booksToPurchase[i] == 1) {
+                    distinctBooks++;
+                    booksToPurchase[i]--;
+                } else if (booksToPurchase[i] > 1) {
+                    booksToPurchase[i]--;
+                    duplicates = true;
+                    distinctBooks++;
+                }
             }
-        }
 
-        int numberRemainingBooks = Arrays.stream(remainingBooks).reduce(0, (x, y) -> x + y);
-        int numberOfBooks = Arrays.stream(booksToPurchase).reduce(0, (x, y) -> x + y);
+            BigDecimal rawTotalPrice = calculateRawPrice(distinctBooks);
+            BigDecimal discount = findDiscount(distinctBooks);
+            BigDecimal discountedPrice = calculateDiscountedPrice(discount, rawTotalPrice);
 
-        BigDecimal rawTotalPrice = calculateRawPrice(numberOfBooks);
-        BigDecimal discount = findDiscount(numberOfBooks);
+            totalDiscountedPrice = totalDiscountedPrice.add(discountedPrice);
 
-        BigDecimal additionalPrice = calculateRawPrice(numberRemainingBooks);
-        BigDecimal additionalDiscount = findDiscount(numberRemainingBooks);
+        } while (duplicates);
 
-        BigDecimal discountedPrice = calculateDiscountedPrice(discount, rawTotalPrice);
-        BigDecimal additionalDiscountedPrice = calculateDiscountedPrice(additionalDiscount, additionalPrice);
-
-        return discountedPrice.add(additionalDiscountedPrice);
+        return totalDiscountedPrice;
     }
 
     private BigDecimal calculateRawPrice(int numberOfBooks) {

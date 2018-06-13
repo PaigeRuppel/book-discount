@@ -13,12 +13,12 @@ public class DiscountCalculatorTest {
 
     BigDecimal eightDollars = BigDecimal.valueOf(8.00).setScale(2);
     BigDecimal sixteenDollars = BigDecimal.valueOf(16.00).setScale(2);
-
-
     BigDecimal fifteenDollarsTwentyCents = BigDecimal.valueOf(15.20).setScale(2);
     BigDecimal twentyOneDollarsSixtyCents = BigDecimal.valueOf(21.60).setScale(2);
     BigDecimal twentyFiveDollarsSixtyCents = BigDecimal.valueOf(25.60).setScale(2);
     BigDecimal thirtyDollars = BigDecimal.valueOf(30.00).setScale(2);
+    BigDecimal thirtyDollarsFortyCents = BigDecimal.valueOf(30.40).setScale(2);
+    BigDecimal thirtyEightDollarsFortyCents = BigDecimal.valueOf(38.40).setScale(2);
 
     private DiscountCalculator underTest;
 
@@ -72,7 +72,13 @@ public class DiscountCalculatorTest {
     @Test
     public void whenTwoLikeSetsArePurchasedEachShouldGetTheTwoBookDiscount() {
         int[] booksToPurchase = {2, 2, 0, 0, 0};
-        assertThat(underTest.getCost(booksToPurchase), is(fifteenDollarsTwentyCents.multiply(BigDecimal.valueOf(2))));
+        assertThat(underTest.getCost(booksToPurchase), is(thirtyDollarsFortyCents));
+    }
+
+    @Test
+    public void whenTwoLikeSetsArePurchasedEachShouldGetTheTwoBookDiscountAndRemainingSingleBookShouldNotGetDiscount() {
+        int[] booksToPurchase = {2, 3, 0, 0, 0};
+        assertThat(underTest.getCost(booksToPurchase), is(thirtyEightDollarsFortyCents));
     }
 
 }
