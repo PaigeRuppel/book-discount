@@ -7,6 +7,7 @@ import java.util.Map;
 public class DiscountCalculator {
 
     private static final BigDecimal RAW_COST_PER_BOOK = BigDecimal.valueOf(8.00);
+    private Map<Integer, Integer> distinctGroupings;
 
     private static Map<Integer, BigDecimal> discounts() {
         Map<Integer, BigDecimal> discounts = new HashMap<>();
@@ -18,8 +19,6 @@ public class DiscountCalculator {
         discounts.put(5, BigDecimal.valueOf(0.75));
         return discounts;
     }
-
-    private Map<Integer, Integer> distinctGroupings;
 
     public BigDecimal getCost(int[] booksToPurchase) {
         buildDistinctGroupingsOfBooks(booksToPurchase);
@@ -45,6 +44,7 @@ public class DiscountCalculator {
 
     private BigDecimal findMaximumDiscount() {
         adjustGroupingsToMaximizeDiscount();
+
         int counter = 1;
         BigDecimal totalPrice = BigDecimal.valueOf(0);
 
@@ -63,7 +63,7 @@ public class DiscountCalculator {
     }
 
     private void adjustGroupingsToMaximizeDiscount() {
-        if (distinctGroupings.getOrDefault(3, 0) >= 1 && distinctGroupings.getOrDefault(5, 0) >= 1) {
+        if (hasASetOfFiveAndThree()) {
             int numberOfThrees = distinctGroupings.get(3);
             int numberOfFives = distinctGroupings.get(5);
             int numberOfSetsOfFour = distinctGroupings.getOrDefault(4, 0);
@@ -74,6 +74,10 @@ public class DiscountCalculator {
             }
             distinctGroupings.put(4, numberOfSetsOfFour);
         }
+    }
+
+    private boolean hasASetOfFiveAndThree() {
+        return distinctGroupings.getOrDefault(3, 0) >= 1 && distinctGroupings.getOrDefault(5, 0) >= 1;
     }
 
     private BigDecimal calculateRawPrice(int numberOfBooks) {
